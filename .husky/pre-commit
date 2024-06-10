@@ -4,10 +4,9 @@
 # pip install -r $(pwd)/.husky/requirements.txt
 
 # get current commit message
-cat $1 > commitfile.txt
-
+# cat $1 > commitfile.txt
+echo "test"
 # Call the Python script and pass it current commit message
 # to check if commit message references an issue existing in repository
 # python $(pwd)/.husky/validate-issue.py --message $commit_msg
-
 
