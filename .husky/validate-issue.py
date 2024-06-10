@@ -47,7 +47,7 @@ def is_valid_issue(issue_number):
     }
 
     response = requests.post("https://api.github.com/graphql", json={"query": query}, headers=headers)
-
+    print(response)
     if response.status_code == 200:
         data = response.json()
         print(data)
