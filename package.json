@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+  },
+
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}
+
