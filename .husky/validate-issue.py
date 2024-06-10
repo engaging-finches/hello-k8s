@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=env_path)
 
 # Configuration
 # THIS NEEDS TO BE PRESENT IN A .env FILE IN ROOT DIR
-GITHUB_TOKEN = os.getenv("PAT_TOKEN")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 REPO_OWNER = "engaging-finches"
 REPO_NAME = "hello-k8s"
