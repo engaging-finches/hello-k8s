@@ -13,4 +13,4 @@ commit_msg=$(cat $commit_msg_file)
 
 # Define a regular expression to match your desired commit message format
 
-echo commit_msg
+echo $commit_msg
