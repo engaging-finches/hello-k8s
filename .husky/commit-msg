@@ -13,4 +13,8 @@ if [ -z "$commit_message" ]; then
 fi
 
 # set up env
+pip install venv
+source venv/bin/activate
+pip install -r $(pwd)/.husky/requirements.txt
 
+python $(pwd)/.husky/validate-issue.py --message commit_message
