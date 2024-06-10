@@ -1,7 +1,7 @@
 
 # Create a virtual environment
-source $(pwd)/.husky/venv/bin/activate
-pip install -r $(pwd)/.husky/requirements.txt
+# source $(pwd)/.husky/venv/bin/activate
+# pip install -r $(pwd)/.husky/requirements.txt
 
 # get current commit message
 commit_msg_file=$1
