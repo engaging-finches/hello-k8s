@@ -22,5 +22,16 @@ jobs:
         - name: Environment variables
           run: echo "GITHUB_TOKEN=${{ secrets.PAT_TOKEN }}" >> $GITHUB_ENV
 
-        - name: Run valide commit message
+        - name: Run validation commit message
           run: python .husky/validate-issue.py --message "${{ github.event.head_commit.message }}"
+
+        - name: Run conventional commit hook
+          run: |
+            if ! head -1 "${{ github.event.head_commit.message }}" | grep -qE "^(feat|fix|chore|docs|test|style|refactor|perf|build|ci|revert|BREAKING CHANGE)(\(.+?\))?: .{1,}$"; then
+                echo "Aborting commit. Your commit message is invalid." >&2
+                exit 1
+            fi
+            if ! head -1 "${{ github.event.head_commit.message }}" | grep -qE "^.{1,88}$"; then
+                echo "Aborting commit. Your commit message is too long." >&2
+                exit 1
+            fi
