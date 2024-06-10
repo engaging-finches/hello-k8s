@@ -58,5 +58,5 @@ def main():
 #         print("Error: No valid issue reference found in commit message.")
 #         sys.exit(1)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
