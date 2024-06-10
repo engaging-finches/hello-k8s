@@ -16,8 +16,22 @@ fi
 python3 -m venv venv
 source venv/bin/activate
 
-# TODO: we should only install if requirements are not already installed
-pip3 install -r .husky/requirements.txt
+# Compare the contents of requirements.txt and .current_requirements.txt
+check_requirements() {
+  pip3 freeze > .current_requirements.txt
+
+  if cmp -s .husky/requirements.txt .current_requirements.txt; then
+    rm .current_requirements.txt
+    return 0
+  else
+    rm .current_requirements.txt
+    return 1
+  fi
+}
+
+if ! check_requirements; then
+  pip3 install -r .husky/requirements.txt
+fi
 
 # checks repo for an issue matching the one referenced in commit message
 python .husky/validate-issue.py --message "$commit_message"
