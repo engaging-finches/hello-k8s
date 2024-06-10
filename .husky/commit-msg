@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+commit_message_file="$1"
+commit_message=$(cat "$commit_message_file")
+
+echo "Commit message: $commit_message"
+
+# Add your validation logic here
+if [ -z "$commit_message" ]; then
+  echo "Error: Commit message cannot be empty"
+  exit 1
+fi
+
+# set up env
+python3 -m venv venv
+source venv/bin/activate
+
+# TODO: we should only install if requirements are not already installed
+pip3 install -r .husky/requirements.txt
+
+# checks repo for an issue matching the one referenced in commit message
+python .husky/validate-issue.py --message "$commit_message"
