@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+commit_message_file="$1"
+commit_message=$(cat "$commit_message_file")
+
+echo "Commit message: $commit_message"
+
+# Add your validation logic here
+if [ -z "$commit_message" ]; then
+  echo "Error: Commit message cannot be empty"
+  exit 1
+fi
+
+# set up env
+
