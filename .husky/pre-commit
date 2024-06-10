@@ -1,16 +1,14 @@
 
-# # Create a virtual environment
-# source $(pwd)/.husky/venv/bin/activate
-# pip install -r $(pwd)/.husky/requirements.txt
-# # Call the Python script to check if commit message references an issue existing in repository
-# python $(pwd)/.husky/validate-issue.py
+# Create a virtual environment
+source $(pwd)/.husky/venv/bin/activate
+pip install -r $(pwd)/.husky/requirements.txt
 
-
-#!/bin/bash
-
+# get current commit message
 commit_msg_file=$1
 commit_msg=$(cat $commit_msg_file)
+echo $1
+# Call the Python script and pass it current commit message
+# to check if commit message references an issue existing in repository
+# python $(pwd)/.husky/validate-issue.py --message $commit_msg
 
-# Define a regular expression to match your desired commit message format
 
-echo $commit_msg
