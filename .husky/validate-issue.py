@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=env_path)
 
 # Configuration
 # THIS NEEDS TO BE PRESENT IN A .env FILE IN ROOT DIR
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GITHUB_TOKEN = os.getenv("PAT_TOKEN")
 
 REPO_OWNER = "engaging-finches"
 REPO_NAME = "hello-k8s"
@@ -55,7 +55,7 @@ def is_valid_issue(issue_number):
             # If there are errors, print the first error message and return False
             print(f"Error!!!: {data['errors'][0]['message']}")
             return False
-        
+
         if "data" in data and "repository" in data["data"] and "issue" in data["data"]["repository"]:
             return True
     return False
