@@ -1,2 +1,10 @@
 
 echo "hello"
+
+# Create a virtual environment
+source venv/bin/activate
+pip install -r requirements.txt
+# Call the Python script
+python check-version.py
+# Deactivate the virtual environment
+source venv/bin/deactivate
