@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
+import os
+import re
+import requests
+import sys
+from dotenv import load_dotenv
+
+# Determine the path to the .env file in the parent directory
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+env_path = os.path.join(parent_dir, '.env')
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=env_path)
+
+
+# Configuration
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+
+REPO_OWNER = "engaging-finches"
+REPO_NAME = "hello-k8s"
+ISSUE_REGEX = r"#(\d+)"
 
 def main():
-    print("Hello from Python:)")
-
-# import os
-# import re
-# import requests
-# import sys
-
-# # Configuration
-# REPO_OWNER = "your-repo-owner"
-# REPO_NAME = "your-repo-name"
-# # TODO: Find a way to avoid hardcoding this
-# GITHUB_TOKEN = "your-github-token"
-# ISSUE_REGEX = r"#(\d+)"
+    print(GITHUB_TOKEN)
 
 # def get_commit_message():
 #     result = os.popen('git log -1 --pretty=%B').read().strip()

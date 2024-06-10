@@ -5,4 +5,4 @@ pwd
 source $(pwd)/.husky/venv/bin/activate
 pip install -r $(pwd)/.husky/requirements.txt
 # Call the Python script
-python $(pwd)/.husky/check-version.py
+python $(pwd)/.husky/validate-issue.py
