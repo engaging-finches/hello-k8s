@@ -20,4 +20,4 @@ jobs:
         - run: pip install -r .husky/requirements.txt
 
         - name: Run valide commit message
-          run: python .husky/validate-issue.py --message ${{ github.event.head_commit.message }}
+          run: python .husky/validate-issue.py --message "${{ github.event.head_commit.message }}"
