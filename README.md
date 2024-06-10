@@ -10,8 +10,10 @@ The goal of this project is to allow users to easiy manage self-hosted GitHub Ac
 ### Configure commit hooks
 
 **Generate PAT for Husky commit-msg**
-PAT requires read access to issues in the repo that you're using.  Save PAT to a variable called `GITHUB_TOKEN` and store this in a `.env` file in the root directory of your repo.  
+PAT requires read access to issues in the repo that you're using.  Save PAT to a variable called `GITHUB_TOKEN` and store this in a `.env` file in the root directory of your repo.
 
 **Install packages from package.json**
 `npm install`
 
+test
+ads

@@ -47,15 +47,16 @@ def is_valid_issue(issue_number):
     }
 
     response = requests.post("https://api.github.com/graphql", json={"query": query}, headers=headers)
+    print(response)
     if response.status_code == 200:
         data = response.json()
-
+        print(data)
         # Check for errors in the response
         if 'errors' in data and data['errors']:
             # If there are errors, print the first error message and return False
             print(f"Error!!!: {data['errors'][0]['message']}")
             return False
-        
+
         if "data" in data and "repository" in data["data"] and "issue" in data["data"]["repository"]:
             return True
     return False
