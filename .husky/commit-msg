@@ -13,8 +13,11 @@ if [ -z "$commit_message" ]; then
 fi
 
 # set up env
-pip install venv
+python3 -m venv venv
 source venv/bin/activate
-pip install -r $(pwd)/.husky/requirements.txt
 
-python $(pwd)/.husky/validate-issue.py --message commit_message
+# TODO: we should only install if requirements are not already installed
+pip3 install -r .husky/requirements.txt
+
+# checks repo for an issue matching the one referenced in commit message
+python .husky/validate-issue.py --message "$commit_message"
