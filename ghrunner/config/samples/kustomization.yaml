@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- ghrunner_v1_ghrunner.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

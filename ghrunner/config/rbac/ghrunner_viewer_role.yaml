@@ -1,0 +1,23 @@
+# permissions for end users to view ghrunners.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: ghrunner
+    app.kubernetes.io/managed-by: kustomize
+  name: ghrunner-viewer-role
+rules:
+- apiGroups:
+  - ghrunner.ghrunner
+  resources:
+  - ghrunners
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ghrunner.ghrunner
+  resources:
+  - ghrunners/status
+  verbs:
+  - get

@@ -1,0 +1,27 @@
+# permissions for end users to edit ghrunners.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: ghrunner
+    app.kubernetes.io/managed-by: kustomize
+  name: ghrunner-editor-role
+rules:
+- apiGroups:
+  - ghrunner.ghrunner
+  resources:
+  - ghrunners
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ghrunner.ghrunner
+  resources:
+  - ghrunners/status
+  verbs:
+  - get
