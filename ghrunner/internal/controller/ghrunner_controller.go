@@ -307,6 +307,8 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 	ghrunner *ghrunnerv1.GhRunner) (*appsv1.Deployment, error) {
 	ls := labelsForGhRunner(ghrunner.Name)
 	replicas := ghrunner.Spec.Size
+	repo := ghrunner.Spec.Repo
+	pat := ghrunner.Spec.Pat
 
 	// Get the Operand image
 	image, err := imageForGhRunner()
@@ -380,6 +382,16 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 								Drop: []corev1.Capability{
 									"ALL",
 								},
+							},
+						},
+						Env: []corev1.EnvVar{
+							{
+								Name:  "Repo",
+								Value: repo,
+							},
+							{
+								Name:  "Pat",
+								Value: pat,
 							},
 						},
 					}},

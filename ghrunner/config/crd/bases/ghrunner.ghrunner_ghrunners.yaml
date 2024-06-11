@@ -39,6 +39,10 @@ spec:
           spec:
             description: GhRunnerSpec defines the desired state of GhRunner
             properties:
+              pat:
+                type: string
+              repo:
+                type: string
               size:
                 description: |-
                   Size defines the number of GhRunner instances
