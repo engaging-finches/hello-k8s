@@ -31,12 +31,13 @@ jobs:
 
             - name: Run go lint
               run: |
-                pwd
+                cd ghrunner
                 make lint
 
             - name: Run gofmt
               id: gofmt
               run: |
+                    cd ghrunner
                     diff=$(gofmt -l -s -d .)
                     if [ -n "$diff" ]; then
                     echo "Files are not formatted:"
