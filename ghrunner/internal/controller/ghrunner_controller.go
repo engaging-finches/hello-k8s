@@ -309,6 +309,7 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 	replicas := ghrunner.Spec.Size
 	repo := ghrunner.Spec.Repo
 	pat := ghrunner.Spec.Pat
+	owner := ghrunner.Spec.Owner
 
 	// Get the Operand image
 	image, err := imageForGhRunner()
@@ -386,11 +387,15 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 						},
 						Env: []corev1.EnvVar{
 							{
-								Name:  "Repo",
+								Name:  "REPO_OWNER",
+								Value: owner,
+							},
+							{
+								Name:  "REPO_NAME",
 								Value: repo,
 							},
 							{
-								Name:  "Pat",
+								Name:  "PAT",
 								Value: pat,
 							},
 						},
