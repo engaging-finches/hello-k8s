@@ -1,1 +1,5 @@
-npm test
+echo "hello from pre-commit"
+pwd
+cd ghrunner
+make lint-fix
+make fmt

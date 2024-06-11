@@ -15,5 +15,3 @@ PAT requires read access to issues in the repo that you're using.  Save PAT to a
 **Install packages from package.json**
 `npm install`
 
-test
-ads

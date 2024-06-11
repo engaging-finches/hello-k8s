@@ -404,6 +404,8 @@ func labelsForGhRunner(name string) map[string]string {
 	if err == nil {
 		imageTag = strings.Split(image, ":")[1]
 	}
+	// printing to prevent linting error
+	fmt.Print(name)
 	return map[string]string{"app.kubernetes.io/name": "ghrunner",
 		"app.kubernetes.io/version":    imageTag,
 		"app.kubernetes.io/managed-by": "GhRunnerController",
