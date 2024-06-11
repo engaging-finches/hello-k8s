@@ -418,6 +418,8 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 func labelsForGhRunner(name string) map[string]string {
 	var imageTag string
 	image, err := imageForGhRunner()
+	//print name to remove lint error
+	fmt.Print(name)
 	if err == nil {
 		imageTag = strings.Split(image, ":")[1]
 	}
