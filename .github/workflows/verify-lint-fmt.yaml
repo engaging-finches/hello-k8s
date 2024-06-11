@@ -23,8 +23,15 @@ jobs:
 
               with:
                 go-version: 1.22
+
+            - name: Get make
+              run: |
+                    sudo apt-get update
+                    sudo apt-get install make
+
             - name: Run go lint
               run: |
+                pwd
                 make lint
 
             - name: Run gofmt
