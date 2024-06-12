@@ -2,9 +2,8 @@ name: Build and Test
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
-      - 'feature/*'
   workflow_dispatch:
 
 jobs:
