@@ -26,4 +26,6 @@ node_modules/
 
 # environment
 .env
-venv/
+**/venv/
+
+ghrunner/config/samples/sensitiveCR.yaml
