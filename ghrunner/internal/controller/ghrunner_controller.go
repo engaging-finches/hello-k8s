@@ -416,6 +416,7 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 // labelsForGhRunner returns the labels for selecting the resources
 // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 func labelsForGhRunner(name string) map[string]string {
+	fmt.Print(name)
 	var imageTag string
 	image, err := imageForGhRunner()
 	if err == nil {
