@@ -35,9 +35,9 @@ type GhRunnerSpec struct {
 	// +kubebuilder:validation:Maximum=3
 	// +kubebuilder:validation:ExclusiveMaximum=false
 	Size  int32  `json:"size,omitempty"`
+	Owner string `json:"owner,omitempty"`
 	Repo  string `json:"repo,omitempty"`
 	Pat   string `json:"pat,omitempty"`
-	Owner string `json:"owner,omitempty"`
 }
 
 // GhRunnerStatus defines the observed state of GhRunner

@@ -6,3 +6,6 @@ spec:
   # TODO(user): edit the following value to ensure the number
   # of Pods/Instances your Operand must have on cluster
   size: 1
+  owner: "engaging-finches"
+  repo: "hello-k8s"
+  pat: "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"

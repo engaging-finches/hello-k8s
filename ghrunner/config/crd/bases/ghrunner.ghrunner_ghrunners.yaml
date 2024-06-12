@@ -39,6 +39,8 @@ spec:
           spec:
             description: GhRunnerSpec defines the desired state of GhRunner
             properties:
+              owner:
+                type: string
               pat:
                 type: string
               repo:

@@ -13,14 +13,7 @@ plugins:
       kind: GhRunner
       options:
         image: meherliatrio/selfhosted:latest
-        runAsUser: "1001"
-      version: v1
-    - domain: ghrunner
-      group: ghrunner
-      kind: GhRunner
-      options:
-        image: meherliatrio/selfhosted:latest
-        runAsUser: "1001"
+        runAsUser: "1000"
       version: v1
 projectName: ghrunner
 repo: ghrunner/selfhosted

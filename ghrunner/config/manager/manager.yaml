@@ -68,8 +68,6 @@ spec:
         env:
         - name: GHRUNNER_IMAGE
           value: meherliatrio/selfhosted:latest
-        - name: GHRUNNER_IMAGE
-          value: meherliatrio/selfhosted:latest
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

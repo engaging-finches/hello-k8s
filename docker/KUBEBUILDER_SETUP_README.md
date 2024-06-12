@@ -1,10 +1,11 @@
 <!-- create a cluster for managing your API and resources -->
-kind create cluster -n ghrunner-test 
-
-kubebuilder init --domain ghrunner  --repo ghrunner/selfhosted 
+kind create cluster -n ghrunner
 
 <!-- Install cert-manager in cluster -->
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml  
+
+kubebuilder init --domain ghrunner  --repo ghrunner/selfhosted 
+
 
 <!-- plugins are used to generate deployment config for container -- IMPORTANT -->
 kubebuilder create api \
@@ -13,7 +14,7 @@ kubebuilder create api \
   --kind GhRunner \
   --image=meherliatrio/selfhosted:latest \
   --plugins="deploy-image/v1-alpha" \
-  --run-as-user="1001" 
+  --run-as-user="1000" 
 <!-- NOT CERTAIN HOW USEFUL THESE ARE
   --image-container-command="memcached,-m=64,modern,-v" \
   --image-container-port="11211" \ -->

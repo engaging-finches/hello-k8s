@@ -307,9 +307,9 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 	ghrunner *ghrunnerv1.GhRunner) (*appsv1.Deployment, error) {
 	ls := labelsForGhRunner(ghrunner.Name)
 	replicas := ghrunner.Spec.Size
-	repo := ghrunner.Spec.Repo
 	pat := ghrunner.Spec.Pat
 	owner := ghrunner.Spec.Owner
+	repo := ghrunner.Spec.Repo
 
 	// Get the Operand image
 	image, err := imageForGhRunner()
@@ -377,7 +377,7 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 						// More info: https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
 						SecurityContext: &corev1.SecurityContext{
 							RunAsNonRoot:             &[]bool{true}[0],
-							RunAsUser:                &[]int64{1001}[0],
+							RunAsUser:                &[]int64{1000}[0],
 							AllowPrivilegeEscalation: &[]bool{false}[0],
 							Capabilities: &corev1.Capabilities{
 								Drop: []corev1.Capability{
@@ -418,13 +418,9 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 func labelsForGhRunner(name string) map[string]string {
 	var imageTag string
 	image, err := imageForGhRunner()
-	//print name to remove lint error
-	fmt.Print(name)
 	if err == nil {
 		imageTag = strings.Split(image, ":")[1]
 	}
-	// printing to prevent linting error
-	fmt.Print(name)
 	return map[string]string{"app.kubernetes.io/name": "ghrunner",
 		"app.kubernetes.io/version":    imageTag,
 		"app.kubernetes.io/managed-by": "GhRunnerController",
