@@ -40,10 +40,14 @@ spec:
             description: GhRunnerSpec defines the desired state of GhRunner
             properties:
               owner:
+                description: Owner defines the owner of the repository
                 type: string
               pat:
+                description: 'Pat defines the personal access token: Fine grained
+                  permissions for read/write on administration'
                 type: string
               repo:
+                description: Repo defines the repository name
                 type: string
               size:
                 description: |-
