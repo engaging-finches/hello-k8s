@@ -28,4 +28,4 @@ node_modules/
 .env
 **/venv/
 
-/Users/admin/hello-k8s/ghrunner/config/samples/sensitiveCR.yaml
+ghrunner/config/samples/sensitiveCR.yaml
