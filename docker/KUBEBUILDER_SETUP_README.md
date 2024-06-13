@@ -26,10 +26,7 @@ make docker-build docker-push IMG=repo/controllername:tag
 make manifests
 
 <!-- install CRD in cluster -->
-make install
-
-<!-- activate controller in cluster -->
-make deploy IMG=repo/controllername:tag
+make install deploy IMG=repo/controllername:tag
 
 <!-- create a resource from CRD -->
 kubectl apply -f config/samples/somecrmanifestname.yaml

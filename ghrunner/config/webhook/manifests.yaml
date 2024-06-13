@@ -1,0 +1,52 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-ghrunner-ghrunner-v1-ghrunner
+  failurePolicy: Fail
+  name: mghrunner.kb.io
+  rules:
+  - apiGroups:
+    - ghrunner.ghrunner
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ghrunners
+  sideEffects: None
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-ghrunner-ghrunner-v1-ghrunner
+  failurePolicy: Fail
+  name: vghrunner.kb.io
+  rules:
+  - apiGroups:
+    - ghrunner.ghrunner
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ghrunners
+  sideEffects: None
