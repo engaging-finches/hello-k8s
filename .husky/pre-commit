@@ -1,4 +1,9 @@
-echo "hello from pre-commit"
+# Define some colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Hello from pre-commit!${NC}"
 pwd
 cd ghrunner
 
@@ -8,9 +13,9 @@ make lint
 #run fmt check
 diff=$(gofmt -l -s -d .)
 if [ -n "$diff" ]; then
-    echo "Files are not formatted:"
+    echo -e "${RED}Files are not formatted:${NC}"
     echo "$diff"
     exit 1
 else
-    echo "All files are properly formatted."
+    echo -e "${GREEN}All files are properly formatted.${NC}"
 fi
