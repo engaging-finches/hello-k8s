@@ -1,5 +1,16 @@
 echo "hello from pre-commit"
 pwd
 cd ghrunner
-make lint-fix
-make fmt
+
+#run lint check
+make lint
+
+#run fmt check
+diff=$(gofmt -l -s -d .)
+if [ -n "$diff" ]; then
+    echo "Files are not formatted:"
+    echo "$diff"
+    exit 1
+else
+    echo "All files are properly formatted."
+fi
