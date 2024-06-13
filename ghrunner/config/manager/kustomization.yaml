@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: meherliatrio/controllername
-  newTag: tag
+  newTag: june-13-1300
