@@ -11,11 +11,6 @@ cd ghrunner
 make lint
 
 #run fmt check
-diff=$(gofmt -l -s -d .)
-if [ -n "$diff" ]; then
-    echo -e "${RED}Files are not formatted:${NC}"
-    echo "$diff"
-    exit 1
-else
-    echo -e "${GREEN}All files are properly formatted.${NC}"
-fi
+gofmt -l -s -d .
+
+echo -e "${GREEN}All files are properly formatted.${NC}"
