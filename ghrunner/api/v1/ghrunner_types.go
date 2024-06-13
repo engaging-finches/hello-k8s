@@ -34,10 +34,13 @@ type GhRunnerSpec struct {
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Maximum=3
 	// +kubebuilder:validation:ExclusiveMaximum=false
-	Size  int32  `json:"size,omitempty"`
+	Size int32 `json:"size,omitempty"`
+	// +kubebuilder:validation:Required
 	Owner string `json:"owner,omitempty"`
-	Repo  string `json:"repo,omitempty"`
-	Pat   string `json:"pat,omitempty"`
+	// +kubebuilder:validation:Required
+	Repo string `json:"repo,omitempty"`
+	// +kubebuilder:validation:Required
+	Pat string `json:"pat,omitempty"`
 }
 
 // GhRunnerStatus defines the observed state of GhRunner
