@@ -1,0 +1,31 @@
+name: Build and Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
+      - name: Set up Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: 1.22
+
+
+      - name: Get make
+        working-directory: ghrunner
+        run: |
+              sudo apt-get update
+              sudo apt-get install make
+
+      - name: Run make test
+        run: make test
+        working-directory: ghrunner
