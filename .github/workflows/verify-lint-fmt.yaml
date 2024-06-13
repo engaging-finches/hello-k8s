@@ -1,4 +1,4 @@
-name: Lint and Format
+name: Verify Lint and Format
 
 on:
   push:
