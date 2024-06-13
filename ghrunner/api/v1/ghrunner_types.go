@@ -35,11 +35,11 @@ type GhRunnerSpec struct {
 	// +kubebuilder:validation:Maximum=3
 	// +kubebuilder:validation:ExclusiveMaximum=false
 	Size int32 `json:"size,omitempty"`
-	// +kubebuilder:validation:Required
+	// Owner defines the owner of the repository
 	Owner string `json:"owner,omitempty"`
-	// +kubebuilder:validation:Required
+	// Repo defines the repository name
 	Repo string `json:"repo,omitempty"`
-	// +kubebuilder:validation:Required
+	// Pat defines the personal access token: Fine grained permissions for read/write on administration
 	Pat string `json:"pat,omitempty"`
 }
 
