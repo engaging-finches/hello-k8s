@@ -98,6 +98,9 @@ func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return ctrl.Result{}, err
 	}
 
+	// Log the new fields
+	log.Info("Reconciling GhRunner", "Owner", ghrunner.Spec.Owner, "Repo", ghrunner.Spec.Repo, "PAT", "REDACTED")
+
 	// Let's just set the status as Unknown when no status is available
 	if ghrunner.Status.Conditions == nil || len(ghrunner.Status.Conditions) == 0 {
 		meta.SetStatusCondition(&ghrunner.Status.Conditions, metav1.Condition{Type: typeAvailableGhRunner, Status: metav1.ConditionUnknown, Reason: "Reconciling", Message: "Starting reconciliation"})
@@ -235,8 +238,18 @@ func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// Therefore, the following code will ensure the Deployment size is the same as defined
 	// via the Size spec of the Custom Resource which we are reconciling.
 	size := ghrunner.Spec.Size
-	if *found.Spec.Replicas != size {
+	repo := ghrunner.Spec.Repo
+	owner := ghrunner.Spec.Owner
+	pat := ghrunner.Spec.Pat
+	log.Info("Checking the size of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Size", size)
+	log.Info("Checking the owner of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Owner", owner)
+	log.Info("Checking the repo of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Repo", repo)
+	// log.Info("Checking the PAT of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "PAT", "REDACTED")
+	if *found.Spec.Replicas != size || found.Spec.Template.Spec.Containers[0].Env[0].Value != owner || found.Spec.Template.Spec.Containers[0].Env[1].Value != repo {
 		found.Spec.Replicas = &size
+		found.Spec.Template.Spec.Containers[0].Env[0].Value = owner
+		found.Spec.Template.Spec.Containers[0].Env[1].Value = repo
+		found.Spec.Template.Spec.Containers[0].Env[2].Value = pat
 		if err = r.Update(ctx, found); err != nil {
 			log.Error(err, "Failed to update Deployment",
 				"Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name)
