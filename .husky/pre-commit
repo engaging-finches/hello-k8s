@@ -1,5 +1,15 @@
-echo "hello from pre-commit"
+# Define some colors for output
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Hello from pre-commit!${NC}"
 pwd
 cd ghrunner
-make lint-fix
-make fmt
+
+#run lint check
+make lint
+
+#run fmt check
+gofmt -l -s -d .
+
+echo -e "${GREEN}All files are properly formatted.${NC}"
