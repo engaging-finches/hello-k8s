@@ -245,7 +245,7 @@ func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	log.Info("Checking the owner of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Owner", owner)
 	log.Info("Checking the repo of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Repo", repo)
 	// log.Info("Checking the PAT of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "PAT", "REDACTED")
-	if *found.Spec.Replicas != size || found.Spec.Template.Spec.Containers[0].Env[0].Value != owner || found.Spec.Template.Spec.Containers[0].Env[1].Value != repo {
+	if *found.Spec.Replicas != size || found.Spec.Template.Spec.Containers[0].Env[0].Value != owner || found.Spec.Template.Spec.Containers[0].Env[1].Value != repo || found.Spec.Template.Spec.Containers[0].Env[2].Value != pat {
 		found.Spec.Replicas = &size
 		found.Spec.Template.Spec.Containers[0].Env[0].Value = owner
 		found.Spec.Template.Spec.Containers[0].Env[1].Value = repo
