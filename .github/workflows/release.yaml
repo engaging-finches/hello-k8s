@@ -3,7 +3,7 @@ name: Release
 on:
     push:
         branches:
-            - sematic-releases
+            - semantic-releases
 jobs:
     release:
         permissions:
