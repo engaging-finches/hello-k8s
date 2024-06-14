@@ -26,3 +26,4 @@ kubectl apply -f config/samples/somecrmanifestname.yaml
 - kubectl delete deployment ghrunner-controller-manager -n ghrunner-system
 - make docker-build docker-push IMG=imagename
 - make deploy IMG=imagename
+- make install
