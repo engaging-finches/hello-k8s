@@ -385,7 +385,7 @@ func (r *GhRunnerReconciler) deploymentForGhRunner(
 					Containers: []corev1.Container{{
 						Image:           image,
 						Name:            "ghrunner",
-						ImagePullPolicy: corev1.PullIfNotPresent,
+						ImagePullPolicy: corev1.PullAlways,
 						// Ensure restrictive context for the container
 						// More info: https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
 						SecurityContext: &corev1.SecurityContext{
