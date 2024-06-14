@@ -75,7 +75,10 @@ var _ = Describe("GhRunner controller", func() {
 						Namespace: namespace.Name,
 					},
 					Spec: ghrunnerv1.GhRunnerSpec{
-						Size: 1,
+						Size:  1,
+						Repo:  "cool",
+						Owner: "dude",
+						Pat:   "1231",
 					},
 				}
 
