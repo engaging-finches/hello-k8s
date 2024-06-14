@@ -1,5 +1,6 @@
 const config={
     branches: ['main'], //only release on main branch
+    dryRun: true, //set to false to actually release
     plugins: [
         '@semantic-release/commit-analyzer', //added by default
         {
