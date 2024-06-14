@@ -78,6 +78,14 @@ type GhRunnerReconciler struct {
 // - About Operator Pattern: https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
 // - About Controllers: https://kubernetes.io/docs/concepts/architecture/controller/
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.18.2/pkg/reconcile
+
+func check_true(a bool, b bool, c bool, d bool) bool {
+	if a || b || c || d {
+		return true
+	}
+	return false
+}
+
 func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 
@@ -245,12 +253,17 @@ func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	log.Info("Checking the owner of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Owner", owner)
 	log.Info("Checking the repo of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "Repo", repo)
 	// log.Info("Checking the PAT of the Deployment", "Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name, "PAT", "REDACTED")
-	if *found.Spec.Replicas != size || found.Spec.Template.Spec.Containers[0].Env[0].Value != owner || found.Spec.Template.Spec.Containers[0].Env[1].Value != repo || found.Spec.Template.Spec.Containers[0].Env[2].Value != pat {
+
+	size_check := *found.Spec.Replicas != size
+	owner_check := found.Spec.Template.Spec.Containers[0].Env[0].Value != owner
+	repo_check := found.Spec.Template.Spec.Containers[0].Env[1].Value != repo
+	pat_check := found.Spec.Template.Spec.Containers[0].Env[2].Value != pat
+
+	if check_true(size_check, owner_check, repo_check, pat_check) {
 		found.Spec.Replicas = &size
 		found.Spec.Template.Spec.Containers[0].Env[0].Value = owner
 		found.Spec.Template.Spec.Containers[0].Env[1].Value = repo
 		found.Spec.Template.Spec.Containers[0].Env[2].Value = pat
-
 		if err = r.Update(ctx, found); err != nil {
 			log.Error(err, "Failed to update Deployment",
 				"Deployment.Namespace", found.Namespace, "Deployment.Name", found.Name)
