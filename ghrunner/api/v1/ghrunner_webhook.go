@@ -17,7 +17,6 @@ limitations under the License.
 package v1
 
 import (
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
@@ -61,7 +60,7 @@ func (r *GhRunner) ValidateCreate() (admission.Warnings, error) {
 	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
 
 	// TODO(user): fill in your validation logic upon object creation.
-	return nil, apierrors.NewBadRequest("Repo is required")
+	return nil, nil // apierrors.NewBadRequest("Repo is required")
 }
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
@@ -70,7 +69,7 @@ func (r *GhRunner) ValidateUpdate(old runtime.Object) (admission.Warnings, error
 	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
 
 	// TODO(user): fill in your validation logic upon object update.
-	return nil, apierrors.NewBadRequest("Repo is required")
+	return nil, nil // apierrors.NewBadRequest("Repo is required")
 }
 
 // ValidateDelete implements webhook.Validator so a webhook will be registered for the type

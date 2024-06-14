@@ -31,16 +31,27 @@ type GhRunnerSpec struct {
 	// Size defines the number of GhRunner instances
 	// The following markers will use OpenAPI v3 schema to validate the value
 	// More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
+
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Maximum=3
 	// +kubebuilder:validation:ExclusiveMaximum=false
-	Size int32 `json:"size,omitempty"`
+	// +kubebuilder:validation:Required
+	Size int32 `json:"size"`
+
 	// Owner defines the owner of the repository
-	Owner string `json:"owner,omitempty"`
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MinLength=1
+	Owner string `json:"owner"`
+
 	// Repo defines the repository name
-	Repo string `json:"repo,omitempty"`
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MinLength=1
+	Repo string `json:"repo"`
+
 	// Pat defines the personal access token: Fine grained permissions for read/write on administration
-	Pat string `json:"pat,omitempty"`
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MinLength=1
+	Pat string `json:"pat"`
 }
 
 // GhRunnerStatus defines the observed state of GhRunner

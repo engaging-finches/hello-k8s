@@ -41,23 +41,27 @@ spec:
             properties:
               owner:
                 description: Owner defines the owner of the repository
+                minLength: 1
                 type: string
               pat:
                 description: 'Pat defines the personal access token: Fine grained
                   permissions for read/write on administration'
+                minLength: 1
                 type: string
               repo:
                 description: Repo defines the repository name
+                minLength: 1
                 type: string
               size:
-                description: |-
-                  Size defines the number of GhRunner instances
-                  The following markers will use OpenAPI v3 schema to validate the value
-                  More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
                 format: int32
                 maximum: 3
                 minimum: 1
                 type: integer
+            required:
+            - owner
+            - pat
+            - repo
+            - size
             type: object
           status:
             description: GhRunnerStatus defines the observed state of GhRunner
