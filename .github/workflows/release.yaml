@@ -13,6 +13,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+               node-version: '20.8.1'
             - run: npm ci
             - run: npx semantic-release
               env:
