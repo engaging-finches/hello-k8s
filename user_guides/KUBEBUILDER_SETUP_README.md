@@ -23,7 +23,7 @@ kubebuilder create api \
   --image-container-command="memcached,-m=64,modern,-v" \
   --image-container-port="11211" \ -->
 
-### modify api/v1/ghrunner_types.go, internal/controller/ghrunner_controller.go -- replicate file contents from engaging-finches/hello-k8s commit SHA: c1d5748c7caf5a47d075ecf9eaa459df9a422866
+### modify api/v1/ghrunner_types.go, internal/controller/ghrunner_controller.go -- replicate file contents from engaging-finches/hello-k8s main branch
 
 ### apply changes to ghrunner_types.go and/or controller
 make
