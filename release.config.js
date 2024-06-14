@@ -1,13 +1,18 @@
 const config={
     branches: ['main'], //only release on main branch
     plugins: [
-        '@semantic-release/commit-analyzer',
-        '@semantic-release/release-notes-generator',
+        '@semantic-release/commit-analyzer', //added by default
+        {
+            "preset": "conventionalcommits"
+        },
+        '@semantic-release/release-notes-generator', //added by default
+        '@semantic-release/npm', //added by default
+        '@semantic-release/github', //added by default
+        "@semantic-release/changelog",
         ["@semantic-release/git", {
-            "assets": ["/ghrunner", "/user_guides", "/docker", "package-lock.json", "package.json", "README.md",],
+            "assets": ["version.txt", "CHANGELOG.md"], //commits these files back into the repo
             "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }],
-        '@semantic-release/github'
     ]
 
 }
