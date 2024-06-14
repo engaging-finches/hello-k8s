@@ -10,12 +10,7 @@ jobs:
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                node-version: '20'
-            - run: npm ci
-            - run: npm run build
+            - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
             - run: npx semantic-release
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
