@@ -1,3 +1,14 @@
+[![Build and Test Go Binary](https://github.com/engaging-finches/hello-k8s/actions/workflows/build-test.yaml/badge.svg)](https://github.com/engaging-finches/hello-k8s/actions/workflows/build-test.yaml)
+
+[![Verify Lint and Format](https://github.com/engaging-finches/hello-k8s/actions/workflows/verify-lint-fmt.yaml/badge.svg)](https://github.com/engaging-finches/hello-k8s/actions/workflows/verify-lint-fmt.yaml)
+
+[![Verify Pre Commit Standards](https://github.com/engaging-finches/hello-k8s/actions/workflows/pre-commit-ci.yaml/badge.svg)](https://github.com/engaging-finches/hello-k8s/actions/workflows/pre-commit-ci.yaml)
+
+[![CodeQL](https://github.com/engaging-finches/hello-k8s/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/engaging-finches/hello-k8s/actions/workflows/github-code-scanning/codeql)
+
+[![Release](https://github.com/engaging-finches/hello-k8s/actions/workflows/release.yaml/badge.svg)](https://github.com/engaging-finches/hello-k8s/actions/workflows/release.yaml)
+
+
 # hello-k8s
 
 ## Description
