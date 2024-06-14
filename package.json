@@ -4,8 +4,6 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "",
-    "ci": "npm install semantic-release -D",
     "prepare": "husky"
   },
   "devDependencies": {
