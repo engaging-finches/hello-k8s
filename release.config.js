@@ -1,5 +1,5 @@
 const config={
-    branches: ['main'], //only release on main branch
+    branches: ['main', 'semantic-releases'], //only release on main branch
     dryRun: false, //set to false to actually release
     debug: false, //set to false to turn off debugging
     plugins: [
