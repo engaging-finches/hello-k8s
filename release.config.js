@@ -1,5 +1,5 @@
 const config={
-    branches: ['fetch-depth'], //only release on main branch
+    branches: ['main'], //only release on main branch
     dryRun: false, //set to false to actually release
     debug: false, //set to false to turn off debugging
     plugins: [
@@ -10,7 +10,8 @@ const config={
         '@semantic-release/release-notes-generator', //added by default
         '@semantic-release/github', //added by default
     ],
-    repositoryUrl: "https://github.com/engaging-finches/hello-k8s"
+    repositoryUrl: "https://github.com/engaging-finches/hello-k8s",
+    initialVersion: "0.1.0"
 }
 
 module.exports=config;
