@@ -34,8 +34,6 @@ func (r *GhRunner) SetupWebhookWithManager(mgr ctrl.Manager) error {
 		Complete()
 }
 
-// TODO(user): EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-
 // +kubebuilder:webhook:path=/mutate-ghrunner-ghrunner-v1-ghrunner,mutating=true,failurePolicy=fail,sideEffects=None,groups=ghrunner.ghrunner,resources=ghrunners,verbs=create;update,versions=v1,name=mghrunner.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Defaulter = &GhRunner{}
@@ -56,8 +54,19 @@ var _ webhook.Validator = &GhRunner{}
 
 // ValidateCreate implements webhook.Validator so a webhook will be registered for the type
 func (r *GhRunner) ValidateCreate() (admission.Warnings, error) {
-	ghrunnerlog.Info("validate create", "name", r.Name)
-	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
+	name := r.Name
+	owner := r.Spec.Owner
+	repo := r.Spec.Repo
+	pat := r.Spec.Pat
+	ghrunnerlog.Info("validate create", "name", name)
+	ghrunnerlog.Info("validate create", "owner", owner)
+	ghrunnerlog.Info("validate create", "repo", repo)
+	ghrunnerlog.Info("validate create", "pat", pat)
+
+	// ensure that owner/repo exists by querying GitHub
+
+	// ensure that PAT can be used to create a GitHub token for configuring Actions runners
+	// if not, print a helpful message informing the user that they need to provide a PAT with proper permissions (for orgs, admin access is required)
 
 	// TODO(user): fill in your validation logic upon object creation.
 	return nil, nil // apierrors.NewBadRequest("Repo is required")
