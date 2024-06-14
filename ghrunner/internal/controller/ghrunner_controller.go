@@ -79,7 +79,8 @@ type GhRunnerReconciler struct {
 // - About Controllers: https://kubernetes.io/docs/concepts/architecture/controller/
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.18.2/pkg/reconcile
 
-func check_true(a bool, b bool, c bool, d bool) bool {
+// checks if the state has updated from any of the parameters
+func check_state(a bool, b bool, c bool, d bool) bool {
 	if a || b || c || d {
 		return true
 	}
@@ -259,7 +260,7 @@ func (r *GhRunnerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	repo_check := found.Spec.Template.Spec.Containers[0].Env[1].Value != repo
 	pat_check := found.Spec.Template.Spec.Containers[0].Env[2].Value != pat
 
-	if check_true(size_check, owner_check, repo_check, pat_check) {
+	if check_state(size_check, owner_check, repo_check, pat_check) {
 		found.Spec.Replicas = &size
 		found.Spec.Template.Spec.Containers[0].Env[0].Value = owner
 		found.Spec.Template.Spec.Containers[0].Env[1].Value = repo
