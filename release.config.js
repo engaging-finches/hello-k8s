@@ -9,8 +9,8 @@ const config={
         },
         '@semantic-release/release-notes-generator', //added by default
         '@semantic-release/github', //added by default
-    ]
-
+    ],
+    repositoryUrl: "https://github.com/engaging-finches/hello-k8s"
 }
 
 module.exports=config;
