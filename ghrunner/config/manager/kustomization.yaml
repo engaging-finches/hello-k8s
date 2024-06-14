@@ -4,5 +4,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: controller
-  newName: meherliatrio/controllername
-  newTag: june-13-1300
+  newName: sloanetribble512/ghrunnercontroller
+  newTag: validation
