@@ -12,7 +12,7 @@ const config={
         '@semantic-release/github', //added by default
         "@semantic-release/changelog",
         ["@semantic-release/git", {
-            "assets": ["version.txt", "CHANGELOG.md"], //commits these files back into the repo
+            "assets": ["ghrunner/dist/*.yaml"], //commits these files back into the repo
             "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}" //skip commits with [skip ci]
         }],
     ]
