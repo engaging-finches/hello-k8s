@@ -1,7 +1,9 @@
 name: Release
 
 on:
-    workflow_dispatch:
+    push:
+        branches:
+            - semantic-releases
 jobs:
     release:
         permissions:
