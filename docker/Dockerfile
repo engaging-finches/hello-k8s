@@ -1,5 +1,5 @@
 # Ubuntu base image
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 # update and install stuff 
 RUN apt-get update && \
