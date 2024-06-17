@@ -35,7 +35,7 @@ The goal of this project is to allow users to easily manage self-hosted GitHub A
 `k get pods -n ghrunner-system`
 
 #### Apply sample CR manifest
-`k apply -f config/samples/sensitiveCR.yaml `
+`k apply -f config/samples/ghrunner_v1_ghrunner.yaml `
 
 #### You should now be able to apply manifests for GhRunner resources.
 <br> </br>
@@ -61,7 +61,7 @@ The goal of this project is to allow users to easily manage self-hosted GitHub A
 `make deploy IMG=imagename`
 
 #### Create a resource from CRD
-`kubectl apply -f config/samples/somecrmanifestname.yaml`
+`kubectl apply -f config/samples/ghrunner_v1_ghrunner.yaml`
 
 
 ### How to apply changes to the controller
