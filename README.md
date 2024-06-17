@@ -19,6 +19,7 @@ The goal of this project is to allow users to easily manage self-hosted GitHub A
 ## Running Locally
 
 
+(Clone repo)
 
 #### Create a cluster
 `kind create cluster -n ghrunner
