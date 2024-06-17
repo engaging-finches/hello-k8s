@@ -28,8 +28,12 @@ The goal of this project is to allow users to easily manage self-hosted GitHub A
 #### Install cert-manager
 `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml`
 
+(Cert Manger might take around 5 mins to start up on cluster)
+
 #### Install CRD and controller in cluster
 `kubectl apply -f dist/install.yaml`
+
+(This might take around 5 mins)
 
 #### Verify controller is running
 `k get pods -n ghrunner-system`
