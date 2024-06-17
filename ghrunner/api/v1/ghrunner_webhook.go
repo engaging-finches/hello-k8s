@@ -17,11 +17,18 @@ limitations under the License.
 package v1
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+	//"strings"
 )
 
 // log is for logging in this package.
@@ -33,8 +40,6 @@ func (r *GhRunner) SetupWebhookWithManager(mgr ctrl.Manager) error {
 		For(r).
 		Complete()
 }
-
-// TODO(user): EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
 // +kubebuilder:webhook:path=/mutate-ghrunner-ghrunner-v1-ghrunner,mutating=true,failurePolicy=fail,sideEffects=None,groups=ghrunner.ghrunner,resources=ghrunners,verbs=create;update,versions=v1,name=mghrunner.kb.io,admissionReviewVersions=v1
 
@@ -54,22 +59,82 @@ func (r *GhRunner) Default() {
 
 var _ webhook.Validator = &GhRunner{}
 
+// getGitHubRegistrationToken makes a POST request to the GitHub API to get a registration token for the runner
+func getGitHubRegistrationToken(accessToken, owner, repo string) error {
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/actions/runners/registration-token", owner, repo)
+
+	// Create a new request
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	// Set the necessary headers
+	req.Header.Set("Authorization", "token "+accessToken)
+	req.Header.Set("Accept", "application/vnd.github+json")
+	// Execute the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			ghrunnerlog.Error(err, "failed to close response body")
+		}
+	}()
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	// Parse the JSON response to extract the registration token
+	var result map[string]interface{}
+	if err := json.Unmarshal(body, &result); err != nil {
+		return err
+	}
+	_, ok := result["token"].(string)
+	if !ok {
+		return fmt.Errorf("must provide valid owner, repo, and pat to get registration token. pat should have read/write administraction access to the repo")
+	}
+	return nil
+}
+
 // ValidateCreate implements webhook.Validator so a webhook will be registered for the type
 func (r *GhRunner) ValidateCreate() (admission.Warnings, error) {
-	ghrunnerlog.Info("validate create", "name", r.Name)
-	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
+	name := r.Name
+	owner := r.Spec.Owner
+	repo := r.Spec.Repo
+	pat := r.Spec.Pat
+	ghrunnerlog.Info("validate create", "name", name)
+	ghrunnerlog.Info("validate create", "owner", owner)
+	ghrunnerlog.Info("validate create", "repo", repo)
+	ghrunnerlog.Info("validate create", "pat", pat)
 
-	// TODO(user): fill in your validation logic upon object creation.
-	return nil, nil // apierrors.NewBadRequest("Repo is required")
+	err := getGitHubRegistrationToken(pat, owner, repo)
+	if err != nil { //if token is invalid, then return an error
+		return nil, apierrors.NewBadRequest(err.Error())
+	}
+
+	return nil, nil
 }
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
 func (r *GhRunner) ValidateUpdate(old runtime.Object) (admission.Warnings, error) {
-	ghrunnerlog.Info("validate update", "name", r.Name)
-	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
+	name := r.Name
+	owner := r.Spec.Owner
+	repo := r.Spec.Repo
+	pat := r.Spec.Pat
+	ghrunnerlog.Info("validate create", "name", name)
+	ghrunnerlog.Info("validate create", "owner", owner)
+	ghrunnerlog.Info("validate create", "repo", repo)
+	ghrunnerlog.Info("validate create", "pat", pat)
 
-	// TODO(user): fill in your validation logic upon object update.
-	return nil, nil // apierrors.NewBadRequest("Repo is required")
+	err := getGitHubRegistrationToken(pat, owner, repo)
+	if err != nil { //if token is invalid, then return an error
+		return nil, apierrors.NewBadRequest(err.Error())
+	}
+
+	return nil, nil
 }
 
 // ValidateDelete implements webhook.Validator so a webhook will be registered for the type
