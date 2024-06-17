@@ -11,9 +11,20 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
+    cert-manager.io/inject-ca-from: ghrunner-system/ghrunner-serving-cert
     controller-gen.kubebuilder.io/version: v0.15.0
   name: ghrunners.ghrunner.ghrunner
 spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: ghrunner-webhook-service
+          namespace: ghrunner-system
+          path: /convert
+      conversionReviewVersions:
+      - v1
   group: ghrunner.ghrunner
   names:
     kind: GhRunner
@@ -49,23 +60,27 @@ spec:
             properties:
               owner:
                 description: Owner defines the owner of the repository
+                minLength: 1
                 type: string
               pat:
                 description: 'Pat defines the personal access token: Fine grained
                   permissions for read/write on administration'
+                minLength: 1
                 type: string
               repo:
                 description: Repo defines the repository name
+                minLength: 1
                 type: string
               size:
-                description: |-
-                  Size defines the number of GhRunner instances
-                  The following markers will use OpenAPI v3 schema to validate the value
-                  More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
                 format: int32
                 maximum: 3
                 minimum: 1
                 type: integer
+            required:
+            - owner
+            - pat
+            - repo
+            - size
             type: object
           status:
             description: GhRunnerStatus defines the observed state of GhRunner
@@ -338,6 +353,22 @@ subjects:
   name: ghrunner-controller-manager
   namespace: ghrunner-system
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: ghrunner
+  name: ghrunner-webhook-service
+  namespace: ghrunner-system
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 9443
+  selector:
+    control-plane: controller-manager
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -368,7 +399,7 @@ spec:
         env:
         - name: GHRUNNER_IMAGE
           value: meherliatrio/selfhosted:latest
-        image: meherliatrio/controller:2
+        image: gmeyer1/cr:june-17-2
         livenessProbe:
           httpGet:
             path: /healthz
@@ -376,6 +407,10 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 20
         name: manager
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
         readinessProbe:
           httpGet:
             path: /readyz
@@ -394,7 +429,114 @@ spec:
           capabilities:
             drop:
             - ALL
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
       securityContext:
         runAsNonRoot: true
       serviceAccountName: ghrunner-controller-manager
       terminationGracePeriodSeconds: 10
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: webhook-server-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    app.kubernetes.io/component: certificate
+    app.kubernetes.io/created-by: ghrunner
+    app.kubernetes.io/instance: serving-cert
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: certificate
+    app.kubernetes.io/part-of: ghrunner
+  name: ghrunner-serving-cert
+  namespace: ghrunner-system
+spec:
+  dnsNames:
+  - ghrunner-webhook-service.ghrunner-system.svc
+  - ghrunner-webhook-service.ghrunner-system.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: ghrunner-selfsigned-issuer
+  secretName: webhook-server-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: ghrunner
+  name: ghrunner-selfsigned-issuer
+  namespace: ghrunner-system
+spec:
+  selfSigned: {}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: ghrunner-system/ghrunner-serving-cert
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: ghrunner
+  name: ghrunner-mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: ghrunner-webhook-service
+      namespace: ghrunner-system
+      path: /mutate-ghrunner-ghrunner-v1-ghrunner
+  failurePolicy: Fail
+  name: mghrunner.kb.io
+  rules:
+  - apiGroups:
+    - ghrunner.ghrunner
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ghrunners
+  sideEffects: None
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: ghrunner-system/ghrunner-serving-cert
+  labels:
+    app.kubernetes.io/component: webhook
+    app.kubernetes.io/created-by: ghrunner
+    app.kubernetes.io/instance: validating-webhook-configuration
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: validatingwebhookconfiguration
+    app.kubernetes.io/part-of: ghrunner
+  name: ghrunner-validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: ghrunner-webhook-service
+      namespace: ghrunner-system
+      path: /validate-ghrunner-ghrunner-v1-ghrunner
+  failurePolicy: Fail
+  name: vghrunner.kb.io
+  rules:
+  - apiGroups:
+    - ghrunner.ghrunner
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ghrunners
+  sideEffects: None
