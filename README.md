@@ -24,8 +24,18 @@ The goal of this project is to allow users to easily manage self-hosted GitHub A
 #### Create a cluster
 `kind create cluster -n ghrunner
 `
+
+#### Install cert-manager
+`kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml`
+
 #### Install CRD and controller in cluster
 `kubectl apply -f dist/install.yaml`
+
+#### Verify controller is running
+`k get pods -n ghrunner-system`
+
+#### Apply sample CR manifest
+`k apply -f config/samples/sensitiveCR.yaml `
 
 #### You should now be able to apply manifests for GhRunner resources.
 <br> </br>
