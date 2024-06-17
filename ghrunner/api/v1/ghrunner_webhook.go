@@ -60,13 +60,13 @@ func (r *GhRunner) Default() {
 var _ webhook.Validator = &GhRunner{}
 
 // getGitHubRegistrationToken makes a POST request to the GitHub API to get a registration token for the runner
-func getGitHubRegistrationToken(accessToken, owner, repo string) (string, error) {
+func getGitHubRegistrationToken(accessToken, owner, repo string) error {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/actions/runners/registration-token", owner, repo)
 
 	// Create a new request
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		return "", err
+		return err
 	}
 	// Set the necessary headers
 	req.Header.Set("Authorization", "token "+accessToken)
@@ -75,24 +75,28 @@ func getGitHubRegistrationToken(accessToken, owner, repo string) (string, error)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			ghrunnerlog.Error(err, "failed to close response body")
+		}
+	}()
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return err
 	}
 	// Parse the JSON response to extract the registration token
 	var result map[string]interface{}
 	if err := json.Unmarshal(body, &result); err != nil {
-		return "", err
+		return err
 	}
-	token, ok := result["token"].(string)
+	_, ok := result["token"].(string)
 	if !ok {
-		return "", fmt.Errorf("must provide valid owner, repo, and pat to get registration token. pat should have read/write administraction access to the repo")
+		return fmt.Errorf("must provide valid owner, repo, and pat to get registration token. pat should have read/write administraction access to the repo")
 	}
-	return token, nil
+	return nil
 }
 
 // ValidateCreate implements webhook.Validator so a webhook will be registered for the type
@@ -106,7 +110,7 @@ func (r *GhRunner) ValidateCreate() (admission.Warnings, error) {
 	ghrunnerlog.Info("validate create", "repo", repo)
 	ghrunnerlog.Info("validate create", "pat", pat)
 
-	_, err := getGitHubRegistrationToken(pat, owner, repo)
+	err := getGitHubRegistrationToken(pat, owner, repo)
 	if err != nil { //if token is invalid, then return an error
 		return nil, apierrors.NewBadRequest(err.Error())
 	}
@@ -116,10 +120,20 @@ func (r *GhRunner) ValidateCreate() (admission.Warnings, error) {
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
 func (r *GhRunner) ValidateUpdate(old runtime.Object) (admission.Warnings, error) {
-	ghrunnerlog.Info("validate update", "name", r.Name)
-	ghrunnerlog.Info("validate create", "name", r.Spec.Repo)
+	name := r.Name
+	owner := r.Spec.Owner
+	repo := r.Spec.Repo
+	pat := r.Spec.Pat
+	ghrunnerlog.Info("validate create", "name", name)
+	ghrunnerlog.Info("validate create", "owner", owner)
+	ghrunnerlog.Info("validate create", "repo", repo)
+	ghrunnerlog.Info("validate create", "pat", pat)
 
-	// TODO(user): fill in your validation logic upon object update.
+	err := getGitHubRegistrationToken(pat, owner, repo)
+	if err != nil { //if token is invalid, then return an error
+		return nil, apierrors.NewBadRequest(err.Error())
+	}
+
 	return nil, nil
 }
 
